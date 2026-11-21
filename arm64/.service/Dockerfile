@@ -20,7 +20,7 @@
 # manylinux wheels for x86_64 and aarch64.
 #
 # The children are started, stopped and observed with `celaut` (celaut-project/service-library,
-# v0.4.1): one static binary per architecture, fetched from the release by its sha256, so the
+# v0.9.0): one static binary per architecture, fetched from the release by its sha256, so the
 # build stays reproducible and a changed asset fails the build. The Python library of Celaut
 # services (celaut-service-libraries, node_controller) is no longer installed.
 FROM python:3.11@sha256:7bd2bbe2112147be4dbe68802d60eee6c5e46042f621ffdf2102264aeeba8716
@@ -34,8 +34,8 @@ RUN pip3 install --no-cache-dir \
         charset-normalizer==3.5.2 certifi==2026.7.22 \
         cryptography==50.0.2 cffi==2.1.1 pycparser==3.12 \
         "bee-rpc @ git+https://github.com/bee-rpc-protocol/bee-rpc-over-grpc-py@b250bcaca191209560be7b41b872d996e8c010d2"
-ADD --checksum=sha256:0173e4b9f33ee785176f68011995f29ceb4ea8d267ddbf7f8f1e24bcd08dd7e9 --chmod=755 \
-    https://github.com/celaut-project/service-library/releases/download/v0.4.1/celaut-linux-arm64 \
+ADD --checksum=sha256:83380e21f02e2387866969174a986a87b339e88c0008cc8fdeccf1b71adbc501 --chmod=755 \
+    https://github.com/celaut-project/service-library/releases/download/v0.9.0/celaut-linux-arm64 \
     /usr/local/bin/celaut
 COPY service /service
 RUN chmod +x /service/app.py

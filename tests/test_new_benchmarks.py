@@ -678,6 +678,14 @@ class BalanceStatementProbeTests(unittest.TestCase):
             ev = app.probe_balance_statement()
         self.assertEqual(ev["verdict"], app.VERDICT_DISHONEST)
 
+    def test_the_peer_rates_are_read_from_rates_since_nodo_66721709(self):
+        rate = lambda k, v: SimpleNamespace(key=k, value=amount(v))
+        peer = SimpleNamespace(rates=[rate("statement_query_mu", 100), rate("statement_row_mu", 1)])
+        self.assertEqual(app._peer_rates(peer), self.RATES)
+        old = SimpleNamespace(mu_per_call=[rate("statement_query_mu", 100), rate("statement_row_mu", 1)])
+        self.assertEqual(app._peer_rates(old), self.RATES)
+        self.assertEqual(app._peer_rates(SimpleNamespace()), {})
+
     def test_a_query_charged_above_its_price_is_dishonest(self):
         run = RUN[:-1] + [("statement_query", -5000, {"rows": "2"})]
         ev = self.run_probe(signed_chain(run, key=self.key), 5_000, 5_000)
