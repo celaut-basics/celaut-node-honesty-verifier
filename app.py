@@ -3016,9 +3016,18 @@ def _statement_query_overcharges(rows, rates):
 
 
 def _peer_rates(peer):
-    """The rates in a Peer (mu_per_call), by name."""
+    """The rates in a Peer, by name: ``Peer.rates`` (``Peer.mu_per_call`` before nodo
+    66721709, the same field number 4)."""
     out = {}
-    for kv in getattr(peer, "mu_per_call", []):
+    kvs = []
+    for name in ("rates", "mu_per_call"):
+        try:
+            kvs = list(getattr(peer, name))
+        except AttributeError:
+            continue
+        if kvs:
+            break
+    for kv in kvs:
         try:
             out[kv.key] = int(kv.value.n)
         except (TypeError, ValueError, AttributeError):

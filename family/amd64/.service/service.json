@@ -15,6 +15,7 @@
             "run.sh"
         ]
     },
+    "uses_gateway": true,
     "envs": [],
     "resources": {
         "at_init": {
